@@ -27,6 +27,7 @@ define Package/vnstat/Default
   SECTION:=net
   CATEGORY:=Network
   URL:=http://humdi.net/vnstat/
+  USERID:=vnstat:vnstat
 endef
 
 define Package/vnstat

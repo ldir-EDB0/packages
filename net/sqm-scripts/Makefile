@@ -8,13 +8,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=sqm-scripts
-PKG_SOURCE_VERSION:=a56e69388d738f968d97bbb17d1a5fb82965fe88
+PKG_SOURCE_VERSION:=10704c8a9a798e1c7da523be1e4240b4bf390b63
 PKG_VERSION:=1.7.0
 PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
-PKG_SOURCE_URL:=https://github.com/tohojo/sqm-scripts
-PKG_MIRROR_HASH:=c382501e5da473a906290c496355a093872d8d07d30a82e261df6e23eb58b5ef
+PKG_SOURCE_URL:=https://github.com/ldir-EDB0/sqm-scripts
+PKG_MIRROR_HASH:=1b87cc88bdc4ebbacbe2114f697043a4370053eca86314df78639954d695d058
 
 PKG_MAINTAINER:=Toke Høiland-Jørgensen <toke@toke.dk>
 PKG_LICENSE:=GPL-2.0-only
@@ -24,7 +24,7 @@ include $(INCLUDE_DIR)/package.mk
 define Package/sqm-scripts
   SECTION:=net
   CATEGORY:=Base system
-  DEPENDS:=+tc +kmod-sched-cake +kmod-ifb +iptables +iptables-mod-ipopt
+  DEPENDS:=+tc +kmod-sched-cake +kmod-ifb #+iptables +iptables-mod-ipopt +iptables-mod-conntrack-extra
   TITLE:=SQM Scripts (QoS)
   PKGARCH:=all
 endef

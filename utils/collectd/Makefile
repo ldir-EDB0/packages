@@ -363,6 +363,7 @@ define Package/collectd/install
 
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/collectd.init $(1)/etc/init.d/collectd
+	$(INSTALL_BIN) ./files/rrdbackup.init $(1)/etc/init.d/rrdbackup
 
 	$(INSTALL_DIR) $(1)/etc/config
 	$(INSTALL_CONF) files/collectd.uci $(1)/etc/config/collectd

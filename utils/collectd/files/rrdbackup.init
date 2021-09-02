@@ -1,0 +1,50 @@
+#!/bin/sh /etc/rc.common
+
+# OpenWrt /etc/init.d/ script to backup and restore the rrd (collectd) database, to preserve data across reboots
+#
+#
+# howto:
+# - upload this file as /etc/init.d/rrdbackup
+# - (optional) adjust BACKUP_DIR below to point to a different target directory for the backup (e.g., a USB drive)
+# - # chmod +x /etc/init.d/rrdbackup
+# - # /etc/init.d/rrdbackup enable
+# - # /etc/init.d/rrdbackup start
+# - (optional) for periodic backups insert into crontab:
+#      0 */6 * * * /etc/init.d/rrdbackup backup
+#   adjust interval to own taste (example above backs up every 6 hours)
+# - (optional) add the backup target directory to /etc/sysupgrade.conf for the backup to be preserved across sysupgrades
+
+# queue this init script to start (i.e., restore) right before collectd starts (80)
+# and stop (i.e., backup) right after collectd stops (10):
+START=79
+STOP=11
+
+# add commands "backup" to manually backup database (e.g. from cronjob)
+# and "restore" to restore database (undocumented, should not be needed in regular use)
+EXTRA_COMMANDS="backup restore"
+EXTRA_HELP="	backup  backup current rrd database"
+
+# directories and files
+# RRD_DIR needs to be relative to root, i.e. no slash in front (to mitigate tar "leading '/'" warning)
+RRD_DIR=tmp/rrd 
+BACKUP_DIR=/mnt/sda3/luci_stats
+BACKUP_FILE=stats.tar.gz
+
+backup() {
+	local TMP_FILE=$(mktemp -u)
+	tar -czf $TMP_FILE -C / $RRD_DIR
+	mkdir -p $BACKUP_DIR
+	mv $TMP_FILE "$BACKUP_DIR/$BACKUP_FILE"
+}
+
+restore() {
+	[[ -f "$BACKUP_DIR/$BACKUP_FILE" ]] && tar -xzf "$BACKUP_DIR/$BACKUP_FILE" -C /
+}
+
+start() {
+	restore
+}
+
+stop() {
+	backup
+}

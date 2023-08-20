@@ -703,7 +703,7 @@ f_nftinit() {
 
 		# default wan-input rules
 		#
-		printf "%s\n" "add rule inet banIP wan-input iifname != { ${wan_dev} } counter accept"
+		printf "%s\n" "add rule inet banIP wan-input iif != { ${wan_dev} } counter accept"
 		printf "%s\n" "add rule inet banIP wan-input ct state established,related counter accept"
 		printf "%s\n" "add rule inet banIP wan-input meta nfproto ipv4 udp sport 67-68 udp dport 67-68 counter accept"
 		printf "%s\n" "add rule inet banIP wan-input meta nfproto ipv6 udp sport 547 udp dport 546 counter accept"
@@ -717,7 +717,7 @@ f_nftinit() {
 
 		# default wan-forward rules
 		#
-		printf "%s\n" "add rule inet banIP wan-forward iifname != { ${wan_dev} } counter accept"
+		printf "%s\n" "add rule inet banIP wan-forward iif != { ${wan_dev} } counter accept"
 		printf "%s\n" "add rule inet banIP wan-forward ct state established,related counter accept"
 		[ -n "${allow_dport}" ] && printf "%s\n" "add rule inet banIP wan-forward ${allow_dport} counter accept"
 		if [ "${ban_loginbound}" = "1" ]; then
@@ -728,7 +728,7 @@ f_nftinit() {
 
 		# default lan-forward rules
 		#
-		printf "%s\n" "add rule inet banIP lan-forward oifname != { ${wan_dev} } counter accept"
+		printf "%s\n" "add rule inet banIP lan-forward oif != { ${wan_dev} } counter accept"
 		printf "%s\n" "add rule inet banIP lan-forward ct state established,related counter accept"
 		[ -n "${vlan_allow}" ] && printf "%s\n" "add rule inet banIP lan-forward iifname { ${vlan_allow} } counter accept"
 		[ -n "${vlan_block}" ] && printf "%s\n" "add rule inet banIP lan-forward iifname { ${vlan_block} } counter goto _reject"

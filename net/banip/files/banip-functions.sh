@@ -602,23 +602,21 @@ f_nftinit() {
 		# default wan-input rules
 		#
 		printf "%s\n" "add rule inet banIP wan-input ct state established,related counter accept"
-		printf "%s\n" "add rule inet banIP wan-input iifname != { ${wan_dev} } counter accept"
+		printf "%s\n" "add rule inet banIP wan-input iif != { ${wan_dev} } counter accept"
 		printf "%s\n" "add rule inet banIP wan-input meta nfproto ipv4 udp sport 67-68 udp dport 67-68 counter accept"
 		printf "%s\n" "add rule inet banIP wan-input meta nfproto ipv6 udp sport 547 udp dport 546 counter accept"
-		printf "%s\n" "add rule inet banIP wan-input meta nfproto ipv4 icmp type { echo-request } limit rate 1000/second counter accept"
-		printf "%s\n" "add rule inet banIP wan-input meta nfproto ipv6 icmpv6 type { echo-request } limit rate 1000/second counter accept"
-		printf "%s\n" "add rule inet banIP wan-input meta nfproto ipv6 icmpv6 type { nd-neighbor-advert, nd-neighbor-solicit, nd-router-advert} limit rate 1000/second ip6 hoplimit 1 counter accept"
-		printf "%s\n" "add rule inet banIP wan-input meta nfproto ipv6 icmpv6 type { nd-neighbor-advert, nd-neighbor-solicit, nd-router-advert} limit rate 1000/second ip6 hoplimit 255 counter accept"
+		printf "%s\n" "add rule inet banIP wan-input ip protocol icmp counter accept"
+		printf "%s\n" "add rule inet banIP wan-input meta l4proto ipv6-icmp counter accept"
 
 		# default wan-forward rules
 		#
 		printf "%s\n" "add rule inet banIP wan-forward ct state established,related counter accept"
-		printf "%s\n" "add rule inet banIP wan-forward iifname != { ${wan_dev} } counter accept"
+		printf "%s\n" "add rule inet banIP wan-forward iif != { ${wan_dev} } counter accept"
 
 		# default lan-forward rules
 		#
 		printf "%s\n" "add rule inet banIP lan-forward ct state established,related counter accept"
-		printf "%s\n" "add rule inet banIP lan-forward oifname != { ${wan_dev} } counter accept"
+		printf "%s\n" "add rule inet banIP lan-forward oif != { ${wan_dev} } counter accept"
 		[ -n "${vlan_allow}" ] && printf "%s\n" "add rule inet banIP lan-forward iifname { ${vlan_allow} } counter accept"
 		[ -n "${vlan_block}" ] && printf "%s\n" "add rule inet banIP lan-forward iifname { ${vlan_block} } counter goto reject-chain"
 	} >"${file}"

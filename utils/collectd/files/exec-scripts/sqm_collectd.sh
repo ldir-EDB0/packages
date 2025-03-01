@@ -53,6 +53,7 @@ handle_cake() {
 
 		tn=${tns:$((i<<1)):2}
 
+		echo "PUTVAL \"$HOSTNAME/sqmcake2-$ifc/qdisct_bytes-$tn\" interval=$INTERVAL N:$sent_bytes"
 		echo "PUTVAL \"$HOSTNAME/sqmcake-$ifc/qdisct_bytes-$tn\" interval=$INTERVAL N:$sent_bytes"
 		echo "PUTVAL \"$HOSTNAME/sqmcake-$ifc/qdisct_thres-$tn\" interval=$INTERVAL N:$threshold_rate"
 		echo "PUTVAL \"$HOSTNAME/sqmcake-$ifc/qdisct_drops-$tn\" interval=$INTERVAL N:$drops:$ecn_mark:$ack_drops"

@@ -14,7 +14,7 @@ PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/ldir-EDB0/sqm-scripts
-PKG_MIRROR_HASH:=386728eecbb3d377503192fb9cdb35fa6f409705e89c65ef716efb3ca1033b5f
+PKG_MIRROR_HASH:=skip
 
 PKG_MAINTAINER:=Toke Høiland-Jørgensen <toke@toke.dk>
 PKG_LICENSE:=GPL-2.0-only

@@ -103,9 +103,17 @@ process_qdisc() {
 }
 
 # while not orphaned
-while [ $(awk '$1 ~ "^PPid:" {print $2;exit}' /proc/$$/status) -ne 1 ] ; do
-	for ifc in "$@" ; do
-		process_qdisc "$ifc"
-	done
-	sleep "${INTERVAL%%.*}"
+while :; do
+    while read key value _; do
+        [ "$key" = "PPid:" ] && break
+    done < /proc/$$/status
+
+    [ "$value" -eq 1 ] && break
+
+    for ifc in "$@"; do
+        process_qdisc "$ifc"
+    done
+
+    sleep "${INTERVAL%%.*}"
 done
+
